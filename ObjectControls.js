@@ -1,44 +1,44 @@
-  // TODO Make it so you can pass in renderer w / h
-function ObjectControls( eye , params ){
+// TODO Make it so you can pass in renderer w / h
+function ObjectControls(eye, params) {
 
   this.intersected;
   this.selected;
 
-  this.eye                = eye;
+  this.eye = eye;
 
-  this.mouse            = new THREE.Vector3();
+  this.mouse = new THREE.Vector3();
   this.unprojectedMouse = new THREE.Vector3();
-  
-  this.objects          = [];
+
+  this.objects = [];
 
   var params = params || {};
   var p = params;
 
-  this.domElement         = p.domElement         || document;
+  this.domElement = p.domElement || document;
 
   // Recursively check descendants of objects in this.objects for intersections.
-  this.recursive          = p.recursive          || false;
-  
-  this.raycaster          = new THREE.Raycaster();
+  this.recursive = p.recursive || false;
 
-  this.raycaster.near     = this.eye.near;
-  this.raycaster.far      = this.eye.far;
+  this.raycaster = new THREE.Raycaster();
+
+  this.raycaster.near = this.eye.near;
+  this.raycaster.far = this.eye.far;
 
 
   var addListener = this.domElement.addEventListener;
 
-  var cb1 = this.mouseDown.bind(  this );
-  var cb2 = this.mouseUp.bind(    this );
-  var cb3 = this.mouseMove.bind(  this );
+  var cb1 = this.mouseDown.bind(this);
+  var cb2 = this.mouseUp.bind(this);
+  var cb3 = this.mouseMove.bind(this);
 
-  this.domElement.addEventListener( 'mousedown', cb1 , false )
-  this.domElement.addEventListener( 'mouseup'  , cb2  , false )
-  this.domElement.addEventListener( 'mousemove', cb3  , false )
+  this.domElement.addEventListener('mousedown', cb1, false)
+  this.domElement.addEventListener('mouseup', cb2, false)
+  this.domElement.addEventListener('mousemove', cb3, false)
 
-  this.domElement.addEventListener( 'touchdown', cb1 , false )
-  this.domElement.addEventListener( 'touchup'  , cb2  , false )
-  this.domElement.addEventListener( 'touchmove', cb3  , false )
- 
+  this.domElement.addEventListener('touchdown', cb1, false)
+  this.domElement.addEventListener('touchup', cb2, false)
+  this.domElement.addEventListener('touchmove', cb3, false)
+
   this.unprojectMouse();
 
 }
@@ -54,105 +54,105 @@ function ObjectControls( eye , params ){
 
 
 // You can think of _up and _down as mouseup and mouse down
-ObjectControls.prototype._down = function(){
+ObjectControls.prototype._down = function () {
 
   this.down();
 
-  if( this.intersected ){
-   
-    this._select( this.intersected  );
+  if (this.intersected) {
+
+    this._select(this.intersected);
 
   }
 
 }
 
-ObjectControls.prototype.down = function(){}
+ObjectControls.prototype.down = function () { }
 
 
 
-ObjectControls.prototype._up = function(){
+ObjectControls.prototype._up = function () {
 
   this.up();
 
-  if( this.selected ){
+  if (this.selected) {
 
-    this._deselect( this.selected );
+    this._deselect(this.selected);
 
   }
 
 }
 
-ObjectControls.prototype.up = function(){}
+ObjectControls.prototype.up = function () { }
 
 
 
-ObjectControls.prototype._hoverOut =  function( object ){
+ObjectControls.prototype._hoverOut = function (object) {
 
   this.hoverOut();
-  
+
   this.objectHovered = false;
-  
-  if( object.hoverOut ){
-    object.hoverOut( this );
+
+  if (object.hoverOut) {
+    object.hoverOut(this);
   }
 
 };
 
-ObjectControls.prototype.hoverOut = function(){};
+ObjectControls.prototype.hoverOut = function () { };
 
 
 
-ObjectControls.prototype._hoverOver = function( object ){
- 
+ObjectControls.prototype._hoverOver = function (object) {
+
   this.hoverOver();
-  
+
   this.objectHovered = true;
-  
-  if( object.hoverOver ){
-    object.hoverOver( this );
+
+  if (object.hoverOver) {
+    object.hoverOver(this);
   }
 
 };
 
-ObjectControls.prototype.hoverOver = function(){}
+ObjectControls.prototype.hoverOver = function () { }
 
 
 
-ObjectControls.prototype._select = function( object ){
- 
+ObjectControls.prototype._select = function (object) {
+
   this.select();
-              
-  var intersectionPoint = this.getIntersectionPoint( this.intersected );
 
-  this.selected       = object;
+  var intersectionPoint = this.getIntersectionPoint(this.intersected);
+
+  this.selected = object;
   this.intersectionPoint = intersectionPoint;
- 
-  if( object.select ){
-    object.select( this );
+
+  if (object.select) {
+    object.select(this);
   }
 
 };
 
-ObjectControls.prototype.select = function(){}
+ObjectControls.prototype.select = function () { }
 
 
 
-ObjectControls.prototype._deselect = function( object ){
-  
+ObjectControls.prototype._deselect = function (object) {
+
   //console.log('DESELECT');
 
   this.selected = undefined;
   this.intersectionPoint = undefined;
 
-  if( object.deselect ){
-    object.deselect( this );
+  if (object.deselect) {
+    object.deselect(this);
   }
 
   this.deselect();
 
 };
 
-ObjectControls.prototype.deselect = function(){}
+ObjectControls.prototype.deselect = function () { }
 
 
 
@@ -163,19 +163,19 @@ ObjectControls.prototype.deselect = function(){}
 
 */
 
-ObjectControls.prototype.add = function( object ){
+ObjectControls.prototype.add = function (object) {
 
-  this.objects.push( object );
+  this.objects.push(object);
 
 };
 
-ObjectControls.prototype.remove = function( object ){
+ObjectControls.prototype.remove = function (object) {
 
-  for( var i = 0; i < this.objects.length; i++ ){
+  for (var i = 0; i < this.objects.length; i++) {
 
-    if( this.objects[i] == object ){
-  
-      this.objects.splice( i , 1 );
+    if (this.objects[i] == object) {
+
+      this.objects.splice(i, 1);
 
     }
 
@@ -192,45 +192,45 @@ ObjectControls.prototype.remove = function( object ){
 
 */
 
-ObjectControls.prototype.update = function(){
+ObjectControls.prototype.update = function () {
 
-  this.setRaycaster( this.unprojectedMouse );
-  if( !this.selected ){
+  this.setRaycaster(this.unprojectedMouse);
+  if (!this.selected) {
 
-    this.checkForIntersections( this.unprojectedMouse );
+    this.checkForIntersections(this.unprojectedMouse);
 
-  }else{
+  } else {
 
-    this._updateSelected( this.unprojectedMouse );
+    this._updateSelected(this.unprojectedMouse);
 
   }
 
 };
 
-ObjectControls.prototype._updateSelected = function(){
+ObjectControls.prototype._updateSelected = function () {
 
-  if( this.selected.update ){
+  if (this.selected.update) {
 
-    this.selected.update( this );
+    this.selected.update(this);
 
   }
 
 }
 
-ObjectControls.prototype.updateSelected = function(){};
+ObjectControls.prototype.updateSelected = function () { };
 
 
 
 
-ObjectControls.prototype.setRaycaster = function( position ){
+ObjectControls.prototype.setRaycaster = function (position) {
 
-  var origin    = position;
+  var origin = position;
   var direction = origin.clone()
 
-  direction.sub( this.eye.position );
+  direction.sub(this.eye.position);
   direction.normalize();
 
-  this.raycaster.set( this.eye.position , direction );
+  this.raycaster.set(this.eye.position, direction);
 
 }
 
@@ -242,19 +242,19 @@ ObjectControls.prototype.setRaycaster = function( position ){
 
 */
 
-ObjectControls.prototype.checkForIntersections = function( position ){
+ObjectControls.prototype.checkForIntersections = function (position) {
 
-  var intersected =  this.raycaster.intersectObjects( this.objects, this.recursive );
+  var intersected = this.raycaster.intersectObjects(this.objects, this.recursive);
 
 
-  if( intersected.length > 0 ){
+  if (intersected.length > 0) {
 
-    for (var n = 0; n < intersected.length; n++ ) {
+    for (var n = 0; n < intersected.length; n++) {
 
-      if ( this.recursive ) {
+      if (this.recursive) {
 
-        var topLevelObj = this._findTopLevelAncestor( intersected[n].object );
-        if ( topLevelObj ) {
+        var topLevelObj = this._findTopLevelAncestor(intersected[n].object);
+        if (topLevelObj) {
 
           // Reset intersected.object, leave intersected.point etc. unchanged.
           // This works since in the two most common use cases the ancestor:
@@ -269,9 +269,9 @@ ObjectControls.prototype.checkForIntersections = function( position ){
 
     }
 
-    this._objectIntersected( intersected );
+    this._objectIntersected(intersected);
 
-  }else{
+  } else {
 
     this._noObjectIntersected();
 
@@ -279,16 +279,16 @@ ObjectControls.prototype.checkForIntersections = function( position ){
 
 };
 
-ObjectControls.prototype.checkForUpDown = function( hand , oHand ){
+ObjectControls.prototype.checkForUpDown = function (hand, oHand) {
 
-  if( this.upDownEvent( this.selectionStrength , hand , oHand ) === true ){
-  
+  if (this.upDownEvent(this.selectionStrength, hand, oHand) === true) {
+
     this._down();
-  
-  }else if( this.upDownEvent( this.selectionStrength , hand , oHand ) === false ){
-  
+
+  } else if (this.upDownEvent(this.selectionStrength, hand, oHand) === false) {
+
     this._up();
-  
+
   }
 
 };
@@ -296,24 +296,24 @@ ObjectControls.prototype.checkForUpDown = function( hand , oHand ){
 
 
 
-ObjectControls.prototype.getIntersectionPoint = function( i ){
+ObjectControls.prototype.getIntersectionPoint = function (i) {
 
-  var intersected =  this.raycaster.intersectObjects( this.objects, this.recursive );
- 
-  return intersected[0].point.sub( i.position );
+  var intersected = this.raycaster.intersectObjects(this.objects, this.recursive);
+
+  return intersected[0].point.sub(i.position);
 
 }
 
-ObjectControls.prototype._findTopLevelAncestor = function( object ){
+ObjectControls.prototype._findTopLevelAncestor = function (object) {
 
   // Traverse back up until we find the first ancestor that is a top-level
   // object then return it (or null), since only top-level objects (which
   // were passed to objectControls.add) handle events, even if their child
   // objects are the ones intersected.
 
-  while ( this.objects.indexOf(object) === -1) {
+  while (this.objects.indexOf(object) === -1) {
 
-    if ( !object.parent ) {
+    if (!object.parent) {
 
       return null;
 
@@ -325,7 +325,7 @@ ObjectControls.prototype._findTopLevelAncestor = function( object ){
 
   return object;
 
-} 
+}
 
 
 
@@ -335,29 +335,29 @@ ObjectControls.prototype._findTopLevelAncestor = function( object ){
 
 */
 
-ObjectControls.prototype._objectIntersected = function( intersected ){
+ObjectControls.prototype._objectIntersected = function (intersected) {
 
   // Assigning out first intersected object
   // so we don't get changes everytime we hit 
   // a new face
   var firstIntersection = intersected[0].object;
 
-  if( !this.intersected ){
+  if (!this.intersected) {
 
     this.intersected = firstIntersection;
 
-    this._hoverOver( this.intersected );
+    this._hoverOver(this.intersected);
 
 
-  }else{
+  } else {
 
-    if( this.intersected != firstIntersection ){
+    if (this.intersected != firstIntersection) {
 
-      this._hoverOut( this.intersected );
+      this._hoverOut(this.intersected);
 
       this.intersected = firstIntersection;
 
-      this._hoverOver( this.intersected );
+      this._hoverOver(this.intersected);
 
     }
 
@@ -367,13 +367,13 @@ ObjectControls.prototype._objectIntersected = function( intersected ){
 
 };
 
-ObjectControls.prototype.objectIntersected = function(){}
+ObjectControls.prototype.objectIntersected = function () { }
 
-ObjectControls.prototype._noObjectIntersected = function(){
+ObjectControls.prototype._noObjectIntersected = function () {
 
-  if( this.intersected  ){
+  if (this.intersected) {
 
-    this._hoverOut( this.intersected );
+    this._hoverOut(this.intersected);
     this.intersected = undefined;
 
   }
@@ -382,57 +382,57 @@ ObjectControls.prototype._noObjectIntersected = function(){
 
 };
 
-ObjectControls.prototype.noObjectIntersected = function(){}
+ObjectControls.prototype.noObjectIntersected = function () { }
 
 
-ObjectControls.prototype.mouseMove = function(event){
+ObjectControls.prototype.mouseMove = function (event) {
 
   this.mouseMoved = true;
 
-  this.mouse.x =  ( event.clientX / window.innerWidth )  * 2 - 1;
-  this.mouse.y = -( event.clientY / window.innerHeight ) * 2 + 1;
+  this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
   this.mouse.z = 1;
 
   this.unprojectMouse();
 
 }
 
-ObjectControls.prototype.unprojectMouse = function(){
+ObjectControls.prototype.unprojectMouse = function () {
 
-  this.unprojectedMouse.copy( this.mouse );
-  this.unprojectedMouse.unproject( this.eye );
+  this.unprojectedMouse.copy(this.mouse);
+  this.unprojectedMouse.unproject(this.eye);
 
 }
 
-ObjectControls.prototype.mouseDown = function( event ){
-  this.mouseMove( event );
+ObjectControls.prototype.mouseDown = function (event) {
+  this.mouseMove(event);
   this._down();
 }
 
-ObjectControls.prototype.mouseUp = function(){
-  this.mouseMove( event );
+ObjectControls.prototype.mouseUp = function () {
+  this.mouseMove(event);
   this._up();
 }
 
 
-ObjectControls.prototype.touchStart = function(event){
-  this.touchMove( event );
+ObjectControls.prototype.touchStart = function (event) {
+  this.touchMove(event);
   this._down();
 }
 
-ObjectControls.prototype.touchEnd = function(event){
-  this.touchMove( event );
+ObjectControls.prototype.touchEnd = function (event) {
+  this.touchMove(event);
   this._up();
 }
 
-ObjectControls.prototype.touchMove= function(event){
-     
+ObjectControls.prototype.touchMove = function (event) {
+
   this.mouseMoved = true;
 
-  this.mouse.x =  (  event.touches[ 0 ].pageX / window.innerWidth )  * 2 - 1;
-  this.mouse.y = -(  event.touches[ 0 ].pageY / window.innerHeight ) * 2 + 1;
+  this.mouse.x = (event.touches[0].pageX / window.innerWidth) * 2 - 1;
+  this.mouse.y = -(event.touches[0].pageY / window.innerHeight) * 2 + 1;
   this.mouse.z = 1;
 
   this.unprojectMouse();
-  
+
 }

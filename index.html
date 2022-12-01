@@ -14,13 +14,6 @@
     <div class="movement-info">
       <h3>Movement Keys</h3>
       <ul>
-        <!-- TODO: Find out why these don't work remotely, but they do on localhost.  -->
-        <!-- <li>Click and drag anywhere on the screen to look around from your current position.</li>
-        <li>Scroll to zoom in and out.</li>
-        <li>Left arrow: Step left</li>
-        <li>Right arrow: Step right</li> -->
-
-        <!-- TODO: Find out why these break when Orbit Controls are added. -->
         <li>W: Move forward</li>
         <li>A: Turn left</li>
         <li>S: Move backward</li>
@@ -31,24 +24,18 @@
         <li>X: Move down and zoom in</li>
       </ul>
     </div>
-    <h2 class="instructions">Goal: Move all of the discs from their current platform to the target platform (under spotlight).</h2>
+    <h2 class="instructions">Goal: Move all the disks from their platform to the target platform (under spotlight).</h2>
     <div class="rules-info">
       <h3>Rules</h3>
       <ol>
-        <li>Only one disc can be moved at a time.</li>
-        <li>A disc can only be moved if it is the uppermost disc on a stack.</li>
-        <li>No disc may be placed on top of a smaller disc.</li>
+        <li>Only one disk can be moved at a time.</li>
+        <li>A Each move consists of taking the upper disk from one of the stacks and placing it on top of another stack or on an empty rod.</li>
+        <li>No disk may be placed on top of a disk that is smaller than it.</li>        
       </ol>
     </div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r83/three.js"></script>
-  <!-- TODO: Why don't these script tags work? -->
-  <!-- <script src="./threejs/build/three.js"></script>
-  <script src="./threejs/examples/js/controls/TransformControls.js"></script>
-  <script src="./threejs/examples/js/libs/stats.min.js"></script>
-  <script src="./threejs/examples/js/Detector.js"></script>
-  <script src="./threejs/examples/js/controls/OrbitControls.js"></script> -->
   <script src="ObjectControls.js"></script>
   <script src="hanoi.js"></script>
 </body>
