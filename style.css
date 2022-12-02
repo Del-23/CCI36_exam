@@ -1,6 +1,5 @@
-/* gradient fallbacks taken from csstricks.com */
 body {
-  background-image: linear-gradient(to left, #0077ff, #ffffff);
+  background-image: linear-gradient(to left, #89cff0, #ffffff);
   margin: 0px;
   overflow: hidden;
 }
@@ -17,11 +16,11 @@ body {
 
 .instructions {
   margin-left: 80px;
-  margin-right: 70px;
+  margin-right: 400px;
   text-align: center;
 }
 
 .movement-info {
-  margin-left: 40px;
+  margin-left: 400px;
 }
 
