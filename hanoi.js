@@ -278,7 +278,7 @@ function letThereBeLight() {
 
   //instantiate a new ambient light
   var ambientLight = new THREE.AmbientLight( 0xebecf0 );
-  scene.add( ambientLight );
+  //scene.add( ambientLight );
 }
 
 function addSpotlight() {
@@ -295,8 +295,8 @@ function addSpotlight() {
   spotLight.shadow.camera.far = 200;
   spotLight.target.position.set(-10, 0, 0);
 
-  //scene.add(spotLight);
-  //scene.add(spotLight.target);
+  scene.add(spotLight);
+  scene.add(spotLight.target);
 }
 
 /**************************
